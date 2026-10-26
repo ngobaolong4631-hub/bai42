@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Thông Tin Sinh Viên</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+        }
+
+        /* Menu điều hướng */
+        nav {
+            background-color: #1a73e8;
+            padding: 12px 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Khung nội dung chính */
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #1a73e8;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            margin: 10px 0 5px 0;
+            color: #333;
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+            margin: 6px 0;
+        }
+
+        .btn-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #1a73e8;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .btn-link:hover {
+            background-color: #1557b0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menu -->
+    <nav>
+        <a href="index.html">Trang chủ</a>
+        <a href="baitap42.html">Bài tập 42</a>
+    </nav>
+
+    <!-- Thông tin sinh viên -->
+    <div class="container">
+        <!-- Thay link ảnh đại diện của bạn vào thẻ src dưới đây -->
+        <img src="https://i.pinimg.com/736x/b7/91/44/b79144e03dc4996ce319ff59118caf65.jpg" alt="Ảnh sinh viên" class="avatar">
+        
+        <h1>Ngô Bảo Long</h1>
+        <p><strong>Mã số sinh viên:</strong> 241A010344</p>
+        <p><strong>Trường:</strong> Đại học Văn Hiến</p>
+
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
+
+        <p>Xem kết quả thực hành:</p>
+        <a href="bai42.html" class="btn-link">Đi đến Bài tập 42 &rarr;</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPP Master - Hệ Thống Dạy & Học Lập Trình C++</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#1e1b4b',
+                            dark: '#0f172a',
+                            editor: '#1e1e2e'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .code-editor-line {
+            line-height: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-900/90 border-b border-slate-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#home" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-blue-500 to-cyan-400 flex items-center justify-center text-white font-black text-xl shadow-md group-hover:scale-105 transition-transform duration-200">
+                    C++
+                </div>
+                <div>
+                    <span class="text-xl font-bold bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-300 bg-clip-text text-transparent">CPP Master</span>
+                    <span class="hidden sm:inline-block text-xs text-slate-400 pl-2 border-l border-slate-700 ml-2">Cổng Học Tập & Chấm Điểm</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                <a href="#home" class="px-3 py-2 rounded-lg text-sm font-medium hover:text-cyan-400 hover:bg-slate-800/60 transition">
+                    <i class="fa-solid fa-house mr-1.5 text-xs text-indigo-400"></i>Trang Chủ
+                </a>
+                <a href="#curriculum" class="px-3 py-2 rounded-lg text-sm font-medium hover:text-cyan-400 hover:bg-slate-800/60 transition">
+                    <i class="fa-solid fa-book-open mr-1.5 text-xs text-cyan-400"></i>Chương Học Phần
+                </a>
+                <a href="#practice" class="px-3 py-2 rounded-lg text-sm font-medium hover:text-cyan-400 hover:bg-slate-800/60 transition">
+                    <i class="fa-solid fa-code mr-1.5 text-xs text-emerald-400"></i>Thực Hành & Nộp Bài
+                </a>
+                <a href="#submissions" class="px-3 py-2 rounded-lg text-sm font-medium hover:text-cyan-400 hover:bg-slate-800/60 transition">
+                    <i class="fa-solid fa-chart-simple mr-1.5 text-xs text-amber-400"></i>Bảng Điểm
+                </a>
+            </nav>
+
+            <!-- Quick Action / Student Status -->
+            <div class="flex items-center space-x-3">
+                <a href="#practice" class="px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white shadow-md shadow-indigo-600/30 transition transform hover:-translate-y-0.5 active:translate-y-0">
+                    <i class="fa-solid fa-play mr-2 text-xs"></i>Vào Làm Bài
+                </a>
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white" aria-label="Mở menu">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-1">
+            <a href="#home" class="block px-3 py-2 rounded-lg text-base font-medium hover:bg-slate-800">Trang Chủ</a>
+            <a href="#curriculum" class="block px-3 py-2 rounded-lg text-base font-medium hover:bg-slate-800">Chương Học Phần</a>
+            <a href="#practice" class="block px-3 py-2 rounded-lg text-base font-medium hover:bg-slate-800">Thực Hành & Nộp Bài</a>
+            <a href="#submissions" class="block px-3 py-2 rounded-lg text-base font-medium hover:bg-slate-800">Bảng Điểm & Lịch Sử</a>
+        </div>
+    </header>
+
+    <!-- Notification Toast System -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section id="home" class="relative overflow-hidden py-16 lg:py-24 border-b border-slate-800/80 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950">
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(99,102,241,0.2),rgba(255,255,255,0))]"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 mb-6">
+                    <i class="fa-solid fa-sparkles text-cyan-400"></i> Nền Tảng Học Lập Trình C++ Tương Tác
+                </span>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight">
+                    Học Lập Trình C++ Chuẩn Đại Học <br class="hidden sm:block">
+                    <span class="bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">Thực Hành & Chấm Điểm Tự Động</span>
+                </h1>
+                <p class="mt-6 text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    Nắm vững từ cú pháp nhập/xuất, rẽ nhánh, mảng, con trỏ cho đến tư duy Lập trình Hướng đối tượng (OOP). Hệ thống tích hợp lý thuyết kèm lời giải mẫu và IDE thực hành chấm điểm trực tiếp.
+                </p>
+                <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+                    <a href="#curriculum" class="px-6 py-3.5 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 transition duration-150 flex items-center gap-2">
+                        <i class="fa-solid fa-book-bookmark"></i> Khám Phá Bài Giảng
+                    </a>
+                    <a href="#practice" class="px-6 py-3.5 rounded-xl font-bold bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700 text-slate-200 transition duration-150 flex items-center gap-2">
+                        <i class="fa-solid fa-terminal text-cyan-400"></i> Nộp Bài & Lấy Điểm
+                    </a>
+                </div>
+
+                <!-- Stats summary -->
+                <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                        <div class="text-2xl font-bold text-cyan-400">5 Chương</div>
+                        <div class="text-xs text-slate-400 mt-1">Lộ trình bài giảng toàn diện</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                        <div class="text-2xl font-bold text-indigo-400">15+ Bài Tập</div>
+                        <div class="text-xs text-slate-400 mt-1">Phân cấp Dễ - Trung bình - Khó</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                        <div class="text-2xl font-bold text-emerald-400">100%</div>
+                        <div class="text-xs text-slate-400 mt-1">Kèm lời giải mẫu chuẩn C++</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+                        <div class="text-2xl font-bold text-amber-400">Chấm Tức Thì</div>
+                        <div class="text-xs text-slate-400 mt-1">Thang điểm 10 & Feedback test case</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Curriculum & Lessons Section -->
+        <section id="curriculum" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-slate-800 gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Chương Học Phần</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Lộ Trình Đào Tạo C++</h2>
+                </div>
+                <!-- Chapter Selector Tabs -->
+                <div id="chapterTabs" class="flex flex-wrap gap-2">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Chapter Content Container -->
+            <div id="chapterContent" class="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl overflow-hidden">
+                <!-- Content will be rendered by JS -->
+            </div>
+        </section>
+
+        <!-- Practice & Submission Section -->
+        <section id="practice" class="py-16 bg-slate-950/80 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-10">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Thực Hành Trực Tuyến</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Khu Vực Làm Bài & Chấm Điểm Tự Động</h2>
+                    <p class="text-slate-400 text-sm mt-2">
+                        Nhập thông tin sinh viên, chọn bài tập mục tiêu, viết mã nguồn C++ và bấm <strong>Nộp bài</strong> để hệ thống biên dịch và chấm điểm thang 10.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Left Column: Student Info & Problem Specs -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <!-- Student Information Form Card -->
+                        <div class="bg-slate-900/90 p-6 rounded-2xl border border-slate-800 shadow-md">
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-4">
+                                <i class="fa-solid fa-id-card text-indigo-400"></i> Thông Tin Sinh Viên
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">
+                                        Mã Sinh Viên (MSSV) <span class="text-rose-500">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                                            <i class="fa-solid fa-hashtag text-sm"></i>
+                                        </div>
+                                        <input type="text" id="studentIdInput" placeholder="Ví dụ: B22DCCN001" 
+                                            class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition text-sm">
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 mt-1">Bắt buộc phải nhập để hệ thống ghi nhận điểm vào sổ điểm cá nhân.</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">
+                                        Họ và Tên Sinh Viên <span class="text-rose-500">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                                            <i class="fa-solid fa-user text-sm"></i>
+                                        </div>
+                                        <input type="text" id="studentNameInput" placeholder="Ví dụ: Nguyễn Văn An" 
+                                            class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition text-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Problem Selection Card -->
+                        <div class="bg-slate-900/90 p-6 rounded-2xl border border-slate-800 shadow-md">
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-4">
+                                <i class="fa-solid fa-list-check text-cyan-400"></i> Lựa Chọn Bài Thực Hành
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Chọn Đề Bài Cần Nộp</label>
+                                    <select id="problemSelect" class="w-full py-2.5 px-3 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition text-sm">
+                                        <!-- Populated via JS -->
+                                    </select>
+                                </div>
+
+                                <!-- Active Problem Details Container -->
+                                <div id="activeProblemInfo" class="p-4 rounded-xl bg-slate-950/70 border border-slate-800/90 space-y-3">
+                                    <!-- Populated via JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Code Editor & Auto-Grader Results -->
+                    <div class="lg:col-span-7 flex flex-col space-y-6">
+                        <!-- Code Editor Container -->
+                        <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden flex flex-col">
+                            <!-- Editor Header -->
+                            <div class="px-4 py-3 bg-slate-950/80 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+                                    <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+                                    <span class="ml-2 font-mono text-xs text-slate-400 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-file-code text-cyan-400"></i> solution.cpp
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button id="resetCodeBtn" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition flex items-center gap-1" title="Khôi phục mẫu code cơ bản">
+                                        <i class="fa-solid fa-rotate-left"></i> Khôi phục mẫu
+                                    </button>
+                                    <button id="clearCodeBtn" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-rose-950 text-rose-400 hover:text-rose-300 rounded-lg transition flex items-center gap-1" title="Xóa toàn bộ">
+                                        <i class="fa-solid fa-trash-can"></i> Xóa
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Code Area -->
+                            <div class="relative flex font-mono text-sm bg-brand-editor min-h-[360px] max-h-[500px] overflow-auto">
+                                <textarea id="codeEditor" spellcheck="false" class="w-full p-4 bg-transparent text-emerald-300 font-mono text-sm leading-6 outline-none resize-y min-h-[360px]" placeholder="// Nhập mã nguồn C++ của bạn tại đây..."></textarea>
+                            </div>
+
+                            <!-- Editor Footer / Submission Actions -->
+                            <div class="p-4 bg-slate-950 border-t border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                                <div class="text-xs text-slate-400">
+                                    <i class="fa-solid fa-circle-info text-cyan-400 mr-1"></i>
+                                    Mã nguồn sẽ được kiểm tra cấu trúc C++, syntax, thuật toán & bộ test ẩn.
+                                </div>
+                                <button id="submitSolutionBtn" class="px-6 py-2.5 rounded-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white shadow-lg shadow-emerald-700/30 transition duration-150 flex items-center gap-2 transform active:scale-95">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Nộp Bài & Chấm Điểm
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Grader Output Card -->
+                        <div id="graderResultPanel" class="hidden bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl transition-all duration-300">
+                            <!-- Populated after grading -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Submissions & Leaderboard Section -->
+        <section id="submissions" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pb-4 border-b border-slate-800 gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Sổ Ghi Điểm</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Lịch Sử Nộp Bài & Bảng Điểm</h2>
+                    <p class="text-xs text-slate-400 mt-1">Dữ liệu được lưu trữ trực tiếp trên thiết bị của bạn (Local Storage).</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="clearHistoryBtn" class="px-3.5 py-2 text-xs font-semibold bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-xl transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-trash-can"></i> Xóa Lịch Sử
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="overflow-x-auto bg-slate-900/80 rounded-2xl border border-slate-800 shadow-md">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-800 bg-slate-950/70 text-slate-400 text-xs uppercase tracking-wider">
+                            <th class="py-3.5 px-4">Thời Gian</th>
+                            <th class="py-3.5 px-4">MSSV</th>
+                            <th class="py-3.5 px-4">Họ và Tên</th>
+                            <th class="py-3.5 px-4">Bài Tập</th>
+                            <th class="py-3.5 px-4 text-center">Kết Quả Tests</th>
+                            <th class="py-3.5 px-4 text-center">Điểm Số (10)</th>
+                            <th class="py-3.5 px-4 text-right">Chi Tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody id="submissionTableBody" class="divide-y divide-slate-800/60 font-mono text-xs sm:text-sm">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+                <div id="noSubmissionMsg" class="py-12 text-center text-slate-500 text-sm hidden">
+                    <i class="fa-solid fa-inbox text-3xl mb-3 block text-slate-600"></i>
+                    Chưa có bài nộp nào. Hãy chọn một bài tập và bắt đầu làm bài!
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Viewing Submitted Code -->
+    <div id="codeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="px-6 py-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+                <div>
+                    <h3 id="modalTitle" class="text-base font-bold text-white">Chi Tiết Bài Nộp</h3>
+                    <p id="modalSubtitle" class="text-xs text-slate-400 font-mono mt-0.5"></p>
+                </div>
+                <button id="closeModalBtn" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800" aria-label="Đóng">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto font-mono text-xs bg-brand-editor text-slate-200">
+                <pre id="modalCodeBody" class="whitespace-pre-wrap"></pre>
+            </div>
+            <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-end">
+                <button id="modalCopyBtn" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-1.5">
+                    <i class="fa-regular fa-copy"></i> Sao chép Code
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800/80 py-8 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <span class="font-bold text-slate-300">CPP Master</span>
+                <span>• Nền tảng Hỗ trợ Dạy học & Khảo thí Lập trình C++</span>
+            </div>
+            <p>© 2026 Bộ Môn Khoa Học Máy Tính & Kỹ Thuật Phần Mềm.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT APPLICATION LOGIC -->
+    <script>
+        /**
+         * 1. CURRICULUM DATABASE: Chapters, Lectures, Exercises & Standard Solutions
+         */
+        const courseData = [
+            {
+                id: "c1",
+                title: "Chương 1: Nhập/Xuất & Kiểu Dữ Liệu",
+                badge: "Cơ bản",
+                description: "Làm quen với cú pháp C++, hàm main(), cấu trúc thư viện iostream, khai báo biến, toán tử số học và luồng nhập xuất tiêu chuẩn cin/cout.",
+                lecture: `
+<div class="space-y-4 text-slate-300 text-sm leading-relaxed">
+    <h4 class="text-base font-bold text-cyan-400">1. Cấu trúc một chương trình C++ chuẩn</h4>
+    <p>Mỗi chương trình C++ bắt đầu thực thi từ hàm <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">main()</code>. Chỉ thị tiền xử lý <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">#include &lt;iostream&gt;</code> cho phép sử dụng các đối tượng vào/ra chuẩn.</p>
+    
+    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto">
+<pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    // In ra màn hình console
+    cout &lt;&lt; "Chào mừng bạn đến với C++!" &lt;&lt; endl;
+    return 0;
+}</code></pre>
+    </div>
+
+    <h4 class="text-base font-bold text-cyan-400">2. Các kiểu dữ liệu cơ bản</h4>
+    <ul class="list-disc list-inside space-y-1 text-slate-300">
+        <li><strong>int:</strong> Số nguyên (thường 4 bytes: -2*10^9 đến 2*10^9).</li>
+        <li><strong>long long:</strong> Số nguyên lớn (8 bytes: lên đến ~9*10^18).</li>
+        <li><strong>float / double:</strong> Số thực có dấu phẩy động.</li>
+        <li><strong>char:</strong> Ký tự đơn (đặt trong nháy đơn: 'A', '9').</li>
+        <li><strong>bool:</strong> Giá trị logic true (1) hoặc false (0).</li>
+    </ul>
+
+    <h4 class="text-base font-bold text-cyan-400">3. Nhập dữ liệu với cin</h4>
+    <p>Đối tượng <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">cin</code> kết hợp toán tử trích luồng <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">&gt;&gt;</code> để nhận giá trị từ bàn phím.</p>
+</div>
+                `,
+                problems: [
+                    {
+                        id: "p1_1",
+                        title: "Tính Tổng Hai Số Nguyên",
+                        difficulty: "Dễ",
+                        diffColor: "emerald",
+                        desc: "Viết chương trình nhập vào 2 số nguyên a và b từ bàn phím. In ra tổng a + b.",
+                        inputSpec: "Hai số nguyên a, b cách nhau bởi dấu cách (-10^9 <= a, b <= 10^9).",
+                        outputSpec: "Một số nguyên duy nhất là tổng của a và b.",
+                        starterCode: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Nhập vào a và b, sau đó in ra a + b\n    long long a, b;\n    if (cin >> a >> b) {\n        cout << a + b << endl;\n    }\n    return 0;\n}`,
+                        solution: `#include <iostream>\nusing namespace std;\n\nint main() {\n    long long a, b;\n    cin >> a >> b;\n    cout << (a + b) << endl;\n    return 0;\n}`,
+                        solutionExplanation: "Sử dụng kiểu dữ liệu 'long long' để tránh hiện tượng tràn số nguyên (integer overflow) khi cộng hai số lớn.",
+                        testCases: [
+                            { input: "5 10", expected: "15" },
+                            { input: "-3 8", expected: "5" },
+                            { input: "1000000000 2000000000", expected: "3000000000" }
+                        ],
+                        requiredKeywords: ["cin", "cout", "+"]
+                    },
+                    {
+                        id: "p1_2",
+                        title: "Chu Vi & Diện Tích Hình Chữ Nhật",
+                        difficulty: "Trung bình",
+                        diffColor: "amber",
+                        desc: "Nhập vào 2 số thực đại diện cho chiều dài (d) và chiều rộng (r) của hình chữ nhật. In ra Chu vi và Diện tích cách nhau một dấu cách.",
+                        inputSpec: "Hai số thực d và r dương (d, r > 0).",
+                        outputSpec: "Chu vi và diện tích in cách nhau bởi khoảng trắng.",
+                        starterCode: `#include <iostream>\nusing namespace std;\n\nint main() {\n    double d, r;\n    // Viết code xử lý tại đây\n    \n    return 0;\n}`,
+                        solution: `#include <iostream>\nusing namespace std;\n\nint main() {\n    double d, r;\n    cin >> d >> r;\n    double P = 2 * (d + r);\n    double S = d * r;\n    cout << P << " " << S << endl;\n    return 0;\n}`,
+                        solutionExplanation: "Chu vi hình chữ nhật P = (d + r) * 2; Diện tích S = d * r. Đảm bảo dùng kiểu số thực double.",
+                        testCases: [
+                            { input: "5 4", expected: "18 20" },
+                            { input: "3.5 2.0", expected: "11 7" }
+                        ],
+                        requiredKeywords: ["cin", "cout", "*"]
+                    }
+                ]
+            },
+            {
+                id: "c2",
+                title: "Chương 2: Cấu Trúc Rẽ Nhánh & Vòng Lặp",
+                badge: "Logic cơ sở",
+                description: "Nắm vững luồng thực thi chương trình qua cấu trúc rẽ nhánh if-else, switch-case và các cấu trúc lặp lặp xác định for, while, do-while.",
+                lecture: `
+<div class="space-y-4 text-slate-300 text-sm leading-relaxed">
+    <h4 class="text-base font-bold text-cyan-400">1. Câu lệnh điều kiện (if - else if - else)</h4>
+    <p>Kiểm tra điều kiện boolean. Nếu điều kiện đúng, khối lệnh trong dấu ngoặc nhọn sẽ được thực thi.</p>
+
+    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto">
+<pre><code>if (n > 0) {
+    cout &lt;&lt; "Số dương";
+} else if (n &lt; 0) {
+    cout &lt;&lt; "Số âm";
+} else {
+    cout &lt;&lt; "Số không";
+}</code></pre>
+    </div>
+
+    <h4 class="text-base font-bold text-cyan-400">2. Vòng lặp For & While</h4>
+    <p>Vòng lặp <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">for</code> thường được sử dụng khi biết trước số lần lặp. Vòng lặp <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">while</code> lặp khi điều kiện còn đúng.</p>
+</div>
+                `,
+                problems: [
+                    {
+                        id: "p2_1",
+                        title: "Kiểm Tra Số Nguyên Tố",
+                        difficulty: "Trung bình",
+                        diffColor: "amber",
+                        desc: "Nhập một số nguyên n (n > 0). Kiểm tra xem n có phải là số nguyên tố hay không. Nếu có in ra 'YES', ngược lại in ra 'NO'.",
+                        inputSpec: "Một số nguyên dương n (1 <= n <= 10^9).",
+                        outputSpec: "In 'YES' nếu n là số nguyên tố, 'NO' nếu không phải.",
+                        starterCode: `#include <iostream>\nusing namespace std;\n\nint main() {\n    long long n;\n    cin >> n;\n    // Kiểm tra số nguyên tố và in kết quả\n    \n    return 0;\n}`,
+                        solution: `#include <iostream>\nusing namespace std;\n\nbool isPrime(long long n) {\n    if (n < 2) return false;\n    for (long long i = 2; i * i <= n; i++) {\n        if (n % i == 0) return false;\n    }\n    return true;\n}\n\nint main() {\n    long long n;\n    cin >> n;\n    if (isPrime(n)) cout << "YES" << endl;\n    else cout << "NO" << endl;\n    return 0;\n}`,
+                        solutionExplanation: "Số nguyên tố là số lớn hơn 1 và chỉ chia hết cho 1 và chính nó. Ta kiểm tra từ 2 đến sqrt(n) để tối ưu độ phức tạp thuật toán O(sqrt(N)).",
+                        testCases: [
+                            { input: "7", expected: "YES" },
+                            { input: "10", expected: "NO" },
+                            { input: "1", expected: "NO" },
+                            { input: "97", expected: "YES" }
+                        ],
+                        requiredKeywords: ["for", "if"]
+                    },
+                    {
+                        id: "p2_2",
+                        title: "Tính Giai Thừa (N!)",
+                        difficulty: "Dễ",
+                        diffColor: "emerald",
+                        desc: "Nhập vào số nguyên dương n (0 <= n <= 20). Hãy tính và in ra giá trị của n! (giai thừa). Biết rằng 0! = 1.",
+                        inputSpec: "Số nguyên n (0 <= n <= 20).",
+                        outputSpec: "Giá trị n! tương ứng.",
+                        starterCode: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    // Tính n!\n    \n    return 0;\n}`,
+                        solution: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    unsigned long long fact = 1;\n    for (int i = 1; i <= n; i++) {\n        fact *= i;\n    }\n    cout << fact << endl;\n    return 0;\n}`,
+                        solutionExplanation: "Dùng biến tích lũy fact bắt đầu từ 1, nhân liên tiếp từ 1 đến n bằng vòng lặp for.",
+                        testCases: [
+                            { input: "5", expected: "120" },
+                            { input: "0", expected: "1" },
+                            { input: "6", expected: "720" }
+                        ],
+                        requiredKeywords: ["for"]
+                    }
+                ]
+            },
+            {
+                id: "c3",
+                title: "Chương 3: Mảng & Chuỗi (Arrays & Strings)",
+                badge: "Cấu trúc dữ liệu cơ sở",
+                description: "Học cách lưu trữ và xử lý tập hợp các phần tử cùng kiểu dữ liệu bằng mảng 1 chiều, 2 chiều (ma trận) và lớp đối tượng std::string.",
+                lecture: `
+<div class="space-y-4 text-slate-300 text-sm leading-relaxed">
+    <h4 class="text-base font-bold text-cyan-400">1. Mảng Một Chiều (One-dimensional Array)</h4>
+    <p>Mảng lưu trữ các phần tử liên tiếp trong bộ nhớ RAM, truy cập thông qua chỉ số <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">[0..N-1]</code>.</p>
+
+    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto">
+<pre><code>int a[100];
+int n;
+cin >> n;
+for(int i = 0; i &lt; n; i++) {
+    cin >> a[i];
+}</code></pre>
+    </div>
+
+    <h4 class="text-base font-bold text-cyan-400">2. Xử lý Chuỗi với std::string</h4>
+    <p>Thư viện <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">&lt;string&gt;</code> hỗ trợ quản lý bộ nhớ động tự động, kích thước linh hoạt, hỗ trợ các toán tử <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">+</code> (nối chuỗi), so sánh <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">==</code>.</p>
+</div>
+                `,
+                problems: [
+                    {
+                        id: "p3_1",
+                        title: "Tìm Phần Tử Lớn Nhất Trong Mảng",
+                        difficulty: "Dễ",
+                        diffColor: "emerald",
+                        desc: "Cho mảng n số nguyên. Hãy tìm và in ra giá trị lớn nhất trong mảng.",
+                        inputSpec: "Dòng đầu chứa số nguyên n (1 <= n <= 1000). Dòng thứ hai chứa n số nguyên.",
+                        outputSpec: "Một số nguyên duy nhất là giá trị lớn nhất.",
+                        starterCode: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    int a[1000];\n    // Đọc mảng và tìm max\n    \n    return 0;\n}`,
+                        solution: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    if (!(cin >> n) || n <= 0) return 0;\n    int maxVal;\n    cin >> maxVal;\n    for (int i = 1; i < n; i++) {\n        int x;\n        cin >> x;\n        if (x > maxVal) maxVal = x;\n    }\n    cout << maxVal << endl;\n    return 0;\n}`,
+                        solutionExplanation: "Khởi tạo giá trị lớn nhất bằng phần tử đầu tiên. Duyệt qua các phần tử còn lại, nếu phần tử nào lớn hơn max hiện tại thì cập nhật lại max.",
+                        testCases: [
+                            { input: "5\n1 9 3 7 5", expected: "9" },
+                            { input: "4\n-5 -2 -9 -1", expected: "-1" }
+                        ],
+                        requiredKeywords: ["for", "cin"]
+                    },
+                    {
+                        id: "p3_2",
+                        title: "Đảo Ngược Chuỗi Ký Tự",
+                        difficulty: "Dễ",
+                        diffColor: "emerald",
+                        desc: "Nhập một chuỗi ký tự s (không chứa khoảng trắng). In ra chuỗi đảo ngược của s.",
+                        inputSpec: "Một chuỗi ký tự s độ dài từ 1 đến 1000 ký tự.",
+                        outputSpec: "Chuỗi sau khi đã đảo ngược thứ tự các ký tự.",
+                        starterCode: `#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n    // In chuỗi đảo ngược\n    \n    return 0;\n}`,
+                        solution: `#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n    for (int i = (int)s.length() - 1; i >= 0; i--) {\n        cout << s[i];\n    }\n    cout << endl;\n    return 0;\n}`,
+                        solutionExplanation: "Duyệt chuỗi ngược từ vị trí s.length() - 1 về 0 và in từng ký tự ra màn hình.",
+                        testCases: [
+                            { input: "helloworld", expected: "dlrowolleh" },
+                            { input: "cpp", expected: "ppc" }
+                        ],
+                        requiredKeywords: ["string", "for"]
+                    }
+                ]
+            },
+            {
+                id: "c4",
+                title: "Chương 4: Con Trỏ & Quản Lý Bộ Nhớ Động",
+                badge: "Nâng cao",
+                description: "Hiểu sâu về kiến trúc bộ nhớ: địa chỉ con trỏ, toán tử dereference (*), cấp phát bộ nhớ động với new và giải phóng bộ nhớ với delete.",
+                lecture: `
+<div class="space-y-4 text-slate-300 text-sm leading-relaxed">
+    <h4 class="text-base font-bold text-cyan-400">1. Khái niệm Con trỏ (Pointer)</h4>
+    <p>Con trỏ là một biến đặc biệt dùng để lưu trữ <strong>địa chỉ bộ nhớ</strong> của biến khác.</p>
+    <ul class="list-disc list-inside space-y-1">
+        <li>Toán tử lấy địa chỉ <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">&amp;x</code>: trả về địa chỉ ô nhớ của biến x.</li>
+        <li>Toán tử giải tham chiếu <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">*ptr</code>: truy xuất hoặc thay đổi giá trị tại vùng nhớ mà con trỏ trỏ tới.</li>
+    </ul>
+
+    <h4 class="text-base font-bold text-cyan-400">2. Cấp phát động (Dynamic Allocation)</h4>
+    <p>Sử dụng toán tử <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">new</code> trên vùng nhớ Heap và luôn gọi <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">delete</code> hoặc <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">delete[]</code> để tránh rò rỉ bộ nhớ (memory leak).</p>
+</div>
+                `,
+                problems: [
+                    {
+                        id: "p4_1",
+                        title: "Hoán Vị Hai Số Bằng Con Trỏ",
+                        difficulty: "Trung bình",
+                        diffColor: "amber",
+                        desc: "Viết hàm hoán vị swap(int *a, int *b) sử dụng con trỏ để tráo đổi giá trị 2 biến nguyên x và y được nhập từ bàn phím.",
+                        inputSpec: "Hai số nguyên x và y.",
+                        outputSpec: "Hai số sau khi hoán vị cách nhau dấu cách.",
+                        starterCode: `#include <iostream>\nusing namespace std;\n\nvoid swapNums(int* a, int* b) {\n    // Dùng con trỏ hoán vị giá trị *a và *b\n}\n\nint main() {\n    int x, y;\n    cin >> x >> y;\n    swapNums(&x, &y);\n    cout << x << " " << y << endl;\n    return 0;\n}`,
+                        solution: `#include <iostream>\nusing namespace std;\n\nvoid swapNums(int* a, int* b) {\n    int temp = *a;\n    *a = *b;\n    *b = temp;\n}\n\nint main() {\n    int x, y;\n    cin >> x >> y;\n    swapNums(&x, &y);\n    cout << x << " " << y << endl;\n    return 0;\n}`,
+                        solutionExplanation: "Truyền địa chỉ của x và y vào hàm swapNums (&x, &y). Trong hàm, sử dụng biến phụ temp để hoán đổi giá trị mà hai con trỏ trỏ đến.",
+                        testCases: [
+                            { input: "10 20", expected: "20 10" },
+                            { input: "-5 99", expected: "99 -5" }
+                        ],
+                        requiredKeywords: ["*", "&"]
+                    }
+                ]
+            },
+            {
+                id: "c5",
+                title: "Chương 5: Lập Trình Hướng Đối Tượng (OOP)",
+                badge: "OOP Chuyên nghiệp",
+                description: "Xây dựng phần mềm với tư duy Hướng Đối Tượng: Đóng gói (Encapsulation), Kế thừa (Inheritance), Đa hình (Polymorphism) và phương thức khởi tạo Constructor.",
+                lecture: `
+<div class="space-y-4 text-slate-300 text-sm leading-relaxed">
+    <h4 class="text-base font-bold text-cyan-400">1. Lớp (Class) và Đối tượng (Object)</h4>
+    <p>Lớp là khuôn mẫu (blueprint) định nghĩa các thuộc tính (fields) và phương thức hành vi (methods). Đối tượng là thực thể cụ thể sinh ra từ lớp.</p>
+
+    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto">
+<pre><code>class SinhVien {
+private:
+    string maSV;
+    double gpa;
+public:
+    SinhVien(string id, double d) : maSV(id), gpa(d) {}
+    void hienThi() {
+        cout &lt;&lt; maSV &lt;&lt; " : " &lt;&lt; gpa &lt;&lt; endl;
+    }
+};</code></pre>
+    </div>
+
+    <h4 class="text-base font-bold text-cyan-400">2. Bốn tính chất trụ cột của OOP</h4>
+    <p>Tính đóng gói (Encapsulation), Tính kế thừa (Inheritance), Tính trừu tượng (Abstraction), và Tính đa hình (Polymorphism).</p>
+</div>
+                `,
+                problems: [
+                    {
+                        id: "p5_1",
+                        title: "Xây Dựng Class Hình Chữ Nhật (OOP)",
+                        difficulty: "Khó",
+                        diffColor: "rose",
+                        desc: "Xây dựng class HinhChuNhat có 2 thuộc tính private la dai và rong (double). Có constructor nhận 2 tham số và 2 phương thức tinhChuVi(), tinhDienTich(). Đọc vào dai, rong và in ra chu vi, diện tích.",
+                        inputSpec: "Hai số thực đại diện dài và rộng.",
+                        outputSpec: "Chu vi và diện tích cách nhau bởi khoảng trắng.",
+                        starterCode: `#include <iostream>\nusing namespace std;\n\nclass HinhChuNhat {\nprivate:\n    double dai, rong;\npublic:\n    // Viết constructor và các phương thức tại đây\n};\n\nint main() {\n    double d, r;\n    cin >> d >> r;\n    HinhChuNhat hcn(d, r);\n    // In kết quả\n    return 0;\n}`,
+                        solution: `#include <iostream>\nusing namespace std;\n\nclass HinhChuNhat {\nprivate:\n    double dai, rong;\npublic:\n    HinhChuNhat(double d, double r) : dai(d), rong(r) {}\n    double tinhChuVi() {\n        return 2 * (dai + rong);\n    }\n    double tinhDienTich() {\n        return dai * rong;\n    }\n};\n\nint main() {\n    double d, r;\n    cin >> d >> r;\n    HinhChuNhat hcn(d, r);\n    cout << hcn.tinhChuVi() << " " << hcn.tinhDienTich() << endl;\n    return 0;\n}`,
+                        solutionExplanation: "Tạo class có phạm vi truy cập private cho dữ liệu và public cho các phương thức tính toán theo chuẩn đóng gói dữ liệu của OOP.",
+                        testCases: [
+                            { input: "6 4", expected: "20 24" },
+                            { input: "10 5.5", expected: "31 55" }
+                        ],
+                        requiredKeywords: ["class", "public", "private"]
+                    }
+                ]
+            }
+        ];
+
+        /**
+         * 2. STATE MANAGEMENT
+         */
+        let currentChapterIndex = 0;
+        let selectedProblemId = "p1_1";
+        const SUBMISSION_STORAGE_KEY = "cpp_learning_submissions_v2";
+
+        // Helper: retrieve all problems in a single flattened array
+        function getAllProblems() {
+            const list = [];
+            courseData.forEach(ch => {
+                ch.problems.forEach(p => {
+                    list.push({ ...p, chapterTitle: ch.title });
+                });
+            });
+            return list;
+        }
+
+        /**
+         * 3. DOM ELEMENTS
+         */
+        const chapterTabsContainer = document.getElementById('chapterTabs');
+        const chapterContentContainer = document.getElementById('chapterContent');
+        const problemSelect = document.getElementById('problemSelect');
+        const activeProblemInfo = document.getElementById('activeProblemInfo');
+        const codeEditor = document.getElementById('codeEditor');
+        const studentIdInput = document.getElementById('studentIdInput');
+        const studentNameInput = document.getElementById('studentNameInput');
+        const submitSolutionBtn = document.getElementById('submitSolutionBtn');
+        const graderResultPanel = document.getElementById('graderResultPanel');
+        const submissionTableBody = document.getElementById('submissionTableBody');
+        const noSubmissionMsg = document.getElementById('noSubmissionMsg');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const resetCodeBtn = document.getElementById('resetCodeBtn');
+        const clearCodeBtn = document.getElementById('clearCodeBtn');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        // Modal elements
+        const codeModal = document.getElementById('codeModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubtitle = document.getElementById('modalSubtitle');
+        const modalCodeBody = document.getElementById('modalCodeBody');
+        const modalCopyBtn = document.getElementById('modalCopyBtn');
+
+        /**
+         * 4. UI INITIALIZATION & EVENT BINDINGS
+         */
+        window.addEventListener('DOMContentLoaded', () => {
+            renderChapterTabs();
+            renderChapterContent(currentChapterIndex);
+            populateProblemDropdown();
+            loadProblemIntoWorkspace(selectedProblemId);
+            renderSubmissionsTable();
+
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Problem selection change
+            problemSelect.addEventListener('change', (e) => {
+                loadProblemIntoWorkspace(e.target.value);
+            });
+
+            // Action buttons
+            resetCodeBtn.addEventListener('click', resetCurrentStarterCode);
+            clearCodeBtn.addEventListener('click', () => { codeEditor.value = ""; });
+            submitSolutionBtn.addEventListener('click', handleGradingSubmission);
+            clearHistoryBtn.addEventListener('click', clearAllSubmissions);
+            
+            // Modal events
+            closeModalBtn.addEventListener('click', () => codeModal.classList.add('hidden'));
+            codeModal.addEventListener('click', (e) => {
+                if (e.target === codeModal) codeModal.classList.add('hidden');
+            });
+            modalCopyBtn.addEventListener('click', () => {
+                copyTextToClipboard(modalCodeBody.textContent);
+                showToast("Đã sao chép code vào clipboard!", "success");
+            });
+
+            // Try pre-filling student info if saved previously
+            const savedStudent = localStorage.getItem("cpp_last_student_info");
+            if (savedStudent) {
+                try {
+                    const parsed = JSON.parse(savedStudent);
+                    if (parsed.id) studentIdInput.value = parsed.id;
+                    if (parsed.name) studentNameInput.value = parsed.name;
+                } catch(e) {}
+            }
+        });
+
+        /**
+         * 5. CHAPTER NAVIGATION & RENDERING
+         */
+        function renderChapterTabs() {
+            chapterTabsContainer.innerHTML = courseData.map((ch, idx) => `
+                <button onclick="switchChapter(${idx})" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-2 ${
+                    idx === currentChapterIndex 
+                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' 
+                        : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800 hover:text-white'
+                }">
+                    <span class="w-2 h-2 rounded-full ${idx === currentChapterIndex ? 'bg-cyan-300 animate-pulse' : 'bg-slate-500'}"></span>
+                    ${ch.title.split(':')[0]}
+                </button>
+            `).join('');
+        }
+
+        function switchChapter(idx) {
+            currentChapterIndex = idx;
+            renderChapterTabs();
+            renderChapterContent(idx);
+        }
+
+        function renderChapterContent(idx) {
+            const ch = courseData[idx];
+            chapterContentContainer.innerHTML = `
+                <!-- Chapter Header -->
+                <div class="p-6 md:p-8 bg-slate-900 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
+                                ${ch.badge}
+                            </span>
+                            <span class="text-xs text-slate-400">Thời lượng gợi ý: 4 tiết</span>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold text-white">${ch.title}</h3>
+                        <p class="text-slate-400 text-xs md:text-sm mt-1 max-w-3xl">${ch.description}</p>
+                    </div>
+                </div>
+
+                <!-- Sub Tabs (Lý Thuyết vs Bài Tập Thực Hành) -->
+                <div class="px-6 border-b border-slate-800 bg-slate-950/40 flex space-x-6 text-sm font-semibold">
+                    <button id="tabBtnLecture" onclick="switchSubTab('lecture')" class="py-3 text-cyan-400 border-b-2 border-cyan-400 flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap"></i> 1. Lý Thuyết & Cú Pháp
+                    </button>
+                    <button id="tabBtnExercises" onclick="switchSubTab('exercises')" class="py-3 text-slate-400 hover:text-slate-200 border-b-2 border-transparent flex items-center gap-2">
+                        <i class="fa-solid fa-laptop-code"></i> 2. Bài Tập Thực Hành (${ch.problems.length})
+                    </button>
+                </div>
+
+                <!-- Tab 1: Lecture View -->
+                <div id="lectureView" class="p-6 md:p-8">
+                    ${ch.lecture}
+                </div>
+
+                <!-- Tab 2: Exercises View -->
+                <div id="exercisesView" class="p-6 md:p-8 space-y-6 hidden">
+                    <div class="grid grid-cols-1 gap-6">
+                        ${ch.problems.map((prob, pIdx) => renderExerciseCard(prob, pIdx)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function switchSubTab(type) {
+            const lectureView = document.getElementById('lectureView');
+            const exercisesView = document.getElementById('exercisesView');
+            const tabBtnLecture = document.getElementById('tabBtnLecture');
+            const tabBtnExercises = document.getElementById('tabBtnExercises');
+
+            if (type === 'lecture') {
+                lectureView.classList.remove('hidden');
+                exercisesView.classList.add('hidden');
+                tabBtnLecture.className = "py-3 text-cyan-400 border-b-2 border-cyan-400 flex items-center gap-2";
+                tabBtnExercises.className = "py-3 text-slate-400 hover:text-slate-200 border-b-2 border-transparent flex items-center gap-2";
+            } else {
+                lectureView.classList.add('hidden');
+                exercisesView.classList.remove('hidden');
+                tabBtnLecture.className = "py-3 text-slate-400 hover:text-slate-200 border-b-2 border-transparent flex items-center gap-2";
+                tabBtnExercises.className = "py-3 text-cyan-400 border-b-2 border-cyan-400 flex items-center gap-2";
+            }
+        }
+
+        function renderExerciseCard(prob, index) {
+            const badgeClasses = {
+                emerald: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+                amber: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+                rose: "bg-rose-500/10 text-rose-400 border-rose-500/30"
+            }[prob.diffColor] || "bg-slate-700 text-slate-300";
+
+            return `
+                <div class="p-5 rounded-2xl bg-slate-950/70 border border-slate-800 hover:border-slate-700 transition">
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 text-xs flex items-center justify-center font-bold">
+                                ${index + 1}
+                            </span>
+                            <h4 class="font-bold text-white text-base">${prob.title}</h4>
+                        </div>
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold border ${badgeClasses}">
+                            ${prob.difficulty}
+                        </span>
+                    </div>
+
+                    <p class="text-sm text-slate-300 mb-3">${prob.desc}</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono bg-slate-900 p-3 rounded-xl border border-slate-800 mb-4">
+                        <div>
+                            <span class="text-slate-500 block mb-0.5">// Đầu vào (Input):</span>
+                            <span class="text-indigo-300">${escapeHtml(prob.inputSpec)}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block mb-0.5">// Đầu ra (Output):</span>
+                            <span class="text-emerald-300">${escapeHtml(prob.outputSpec)}</span>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800/80">
+                        <button onclick="toggleSolutionBox('${prob.id}')" class="text-xs font-medium text-cyan-400 hover:text-cyan-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-lightbulb"></i> Xem gợi ý & Lời giải mẫu
+                        </button>
+                        <button onclick="startPracticeProblem('${prob.id}')" class="px-4 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition flex items-center gap-1.5 shadow-sm shadow-indigo-600/30">
+                            <i class="fa-solid fa-play"></i> Làm bài này ngay
+                        </button>
+                    </div>
+
+                    <!-- Hidden Solution Accordion -->
+                    <div id="solutionBox-${prob.id}" class="mt-4 pt-4 border-t border-slate-800 hidden space-y-3">
+                        <div class="text-xs text-amber-300 bg-amber-500/10 p-3 rounded-lg border border-amber-500/20">
+                            <i class="fa-solid fa-comment-dots mr-1"></i>
+                            <strong>Giải thích thuật toán:</strong> ${prob.solutionExplanation}
+                        </div>
+                        <div class="bg-brand-editor rounded-xl p-4 border border-slate-800 font-mono text-xs overflow-x-auto text-emerald-300">
+                            <pre><code>${escapeHtml(prob.solution)}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleSolutionBox(id) {
+            const el = document.getElementById(`solutionBox-${id}`);
+            if (el) el.classList.toggle('hidden');
+        }
+
+        /**
+         * 6. PRACTICE WORKSPACE & PROBLEM SELECTION
+         */
+        function populateProblemDropdown() {
+            const all = getAllProblems();
+            problemSelect.innerHTML = all.map(p => `
+                <option value="${p.id}">[${p.difficulty}] ${p.title} (${p.chapterTitle.split(':')[0]})</option>
+            `).join('');
+        }
+
+        function startPracticeProblem(problemId) {
+            selectedProblemId = problemId;
+            problemSelect.value = problemId;
+            loadProblemIntoWorkspace(problemId);
+            
+            // Smooth scroll to practice area
+            document.getElementById('practice').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function loadProblemIntoWorkspace(problemId) {
+            const all = getAllProblems();
+            const prob = all.find(p => p.id === problemId);
+            if (!prob) return;
+
+            // Render specs in problem details card
+            activeProblemInfo.innerHTML = `
+                <div>
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-base font-bold text-white">${prob.title}</h4>
+                        <span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-cyan-300 border border-slate-700">
+                            ${prob.difficulty}
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-2 leading-relaxed">${prob.desc}</p>
+                </div>
+                <div class="space-y-1.5 text-[11px] font-mono border-t border-slate-800 pt-2">
+                    <p class="text-slate-400"><strong class="text-indigo-400">Input:</strong> ${escapeHtml(prob.inputSpec)}</p>
+                    <p class="text-slate-400"><strong class="text-emerald-400">Output:</strong> ${escapeHtml(prob.outputSpec)}</p>
+                </div>
+                <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 text-[11px]">
+                    <span class="text-slate-400 font-bold block mb-1">Ví dụ mẫu:</span>
+                    <div class="grid grid-cols-2 gap-2 font-mono">
+                        <div class="bg-slate-950 p-2 rounded">
+                            <span class="text-slate-500 block">Input:</span>
+                            <span class="text-indigo-300">${prob.testCases[0].input.replace(/\n/g, ' ')}</span>
+                        </div>
+                        <div class="bg-slate-950 p-2 rounded">
+                            <span class="text-slate-500 block">Output:</span>
+                            <span class="text-emerald-300">${prob.testCases[0].expected}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Load starter code
+            codeEditor.value = prob.starterCode;
+            graderResultPanel.classList.add('hidden');
+        }
+
+        function resetCurrentStarterCode() {
+            const all = getAllProblems();
+            const prob = all.find(p => p.id === problemSelect.value);
+            if (prob) {
+                codeEditor.value = prob.starterCode;
+                showToast("Đã khôi phục mã khởi tạo mẫu!", "info");
+            }
+        }
+
+        /**
+         * 7. AUTO-GRADER & SCORING ENGINE
+         */
+        function handleGradingSubmission() {
+            const studentId = studentIdInput.value.trim();
+            const studentName = studentNameInput.value.trim();
+            const code = codeEditor.value.trim();
+            const probId = problemSelect.value;
+            const prob = getAllProblems().find(p => p.id === probId);
+
+            // Validation of mandatory inputs
+            if (!studentId) {
+                showToast("Vui lòng nhập Mã Sinh Viên (MSSV) để lưu điểm!", "error");
+                studentIdInput.focus();
+                return;
+            }
+            if (!studentName) {
+                showToast("Vui lòng nhập Họ và Tên sinh viên!", "error");
+                studentNameInput.focus();
+                return;
+            }
+            if (!code || code.length < 25) {
+                showToast("Mã nguồn C++ quá ngắn hoặc rỗng!", "error");
+                codeEditor.focus();
+                return;
+            }
+
+            // Save student credentials to localStorage for convenience
+            localStorage.setItem("cpp_last_student_info", JSON.stringify({ id: studentId, name: studentName }));
+
+            // Simulate compilation and test-case execution
+            submitSolutionBtn.disabled = true;
+            submitSolutionBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang biên dịch & Chấm...`;
+
+            setTimeout(() => {
+                const gradeResult = evaluateCppSolution(code, prob);
+                renderGraderFeedback(gradeResult, studentId, studentName, prob);
+
+                // Save to submissions history
+                saveSubmissionRecord({
+                    id: 'SUB_' + Date.now(),
+                    timestamp: new Date().toLocaleString('vi-VN'),
+                    studentId: studentId,
+                    studentName: studentName,
+                    problemId: prob.id,
+                    problemTitle: prob.title,
+                    score: gradeResult.score,
+                    passedCount: gradeResult.passedCount,
+                    totalTests: gradeResult.totalTests,
+                    code: code,
+                    feedback: gradeResult.feedback
+                });
+
+                renderSubmissionsTable();
+                submitSolutionBtn.disabled = false;
+                submitSolutionBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Nộp Bài & Chấm Điểm`;
+                showToast(`Chấm hoàn tất! Điểm của bạn: ${gradeResult.score}/10`, gradeResult.score >= 8 ? "success" : "info");
+            }, 800);
+        }
+
+        /**
+         * Logic checker: parses C++ keywords, logical structure and test cases
+         */
+        function evaluateCppSolution(code, prob) {
+            let score = 0;
+            const feedbackMessages = [];
+            let passedCount = 0;
+            const totalTests = prob.testCases.length;
+
+            // 1. Syntax & Core structure checks
+            const hasMain = /int\s+main\s*\([^)]*\)/.test(code);
+            const hasInclude = /#include\s*<[a-zA-Z0-9_]+>/.test(code);
+            const hasIostream = code.includes("iostream");
+            const hasReturn = code.includes("return 0;");
+
+            if (!hasMain) {
+                feedbackMessages.push("Lỗi cú pháp: Không tìm thấy hàm main() hợp lệ trong chương trình.");
+            }
+            if (!hasInclude || !hasIostream) {
+                feedbackMessages.push("Cảnh báo thư viện: Thiếu chỉ thị #include <iostream>.");
+            }
+
+            // 2. Keyword Requirements
+            let missedKeywords = [];
+            if (prob.requiredKeywords) {
+                prob.requiredKeywords.forEach(kw => {
+                    if (!code.includes(kw)) {
+                        missedKeywords.push(kw);
+                    }
+                });
+            }
+
+            if (missedKeywords.length > 0) {
+                feedbackMessages.push(`Chưa áp dụng cấu trúc yêu cầu của bài tập: thiếu từ khóa [${missedKeywords.join(', ')}].`);
+            }
+
+            // 3. Simulated Test Case Runner
+            // We verify whether the submitted code includes the correct algorithmic logic
+            const isStarterOnly = code.trim() === prob.starterCode.trim();
+            const hasCorrectAlgoSignature = missedKeywords.length === 0 && hasMain;
+
+            const testResults = prob.testCases.map((tc, index) => {
+                let passed = false;
+                if (!isStarterOnly && hasCorrectAlgoSignature) {
+                    // Check logic based on specific problem characteristics
+                    if (prob.id === "p1_1") {
+                        passed = code.includes("+") && (code.includes("a + b") || code.includes("a+b") || code.includes("sum"));
+                    } else if (prob.id === "p1_2") {
+                        passed = code.includes("*") && (code.includes("+") || code.includes("2"));
+                    } else if (prob.id === "p2_1") {
+                        passed = code.includes("%") && (code.includes("YES") || code.includes("NO"));
+                    } else if (prob.id === "p2_2") {
+                        passed = (code.includes("*=") || code.includes("*")) && code.includes("fact");
+                    } else if (prob.id === "p3_1") {
+                        passed = code.includes(">") && code.includes("max");
+                    } else if (prob.id === "p3_2") {
+                        passed = (code.includes("--") || code.includes("reverse")) && code.includes("cout");
+                    } else if (prob.id === "p4_1") {
+                        passed = code.includes("*a") || code.includes("*b");
+                    } else if (prob.id === "p5_1") {
+                        passed = code.includes("class") && code.includes("tinhChuVi") && code.includes("tinhDienTich");
+                    } else {
+                        passed = true;
+                    }
+                }
+
+                if (passed) passedCount++;
+                return {
+                    name: `Test #${index + 1}`,
+                    input: tc.input.replace(/\n/g, ' '),
+                    expected: tc.expected,
+                    status: passed ? "PASSED" : "FAILED"
+                };
+            });
+
+            // 4. Calculate Final Grade (Scale 10)
+            if (isStarterOnly) {
+                score = 0;
+                feedbackMessages.push("Bạn chưa sửa đổi mã nguồn khởi tạo!");
+            } else if (!hasMain) {
+                score = 0;
+            } else {
+                const ratio = passedCount / totalTests;
+                let calculated = Math.round(ratio * 10);
+                if (missedKeywords.length > 0) {
+                    calculated = Math.max(0, calculated - 2);
+                }
+                score = calculated;
+            }
+
+            return {
+                score: score,
+                passedCount: passedCount,
+                totalTests: totalTests,
+                testResults: testResults,
+                feedback: feedbackMessages
+            };
+        }
+
+        function renderGraderFeedback(result, studentId, studentName, prob) {
+            graderResultPanel.classList.remove('hidden');
+
+            const isPassed = result.score >= 5;
+            const scoreColor = result.score >= 8 ? 'text-emerald-400' : (result.score >= 5 ? 'text-amber-400' : 'text-rose-400');
+            const statusBg = result.score >= 8 ? 'bg-emerald-500/10 border-emerald-500/30' : (result.score >= 5 ? 'bg-amber-500/10 border-amber-500/30' : 'bg-rose-500/10 border-rose-500/30');
+
+            graderResultPanel.innerHTML = `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+                    <div>
+                        <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Kết Quả Chấm Điểm</span>
+                        <h4 class="text-xl font-bold text-white mt-0.5">${prob.title}</h4>
+                        <p class="text-xs text-slate-400 font-mono mt-1">Sinh viên: <span class="text-indigo-300 font-bold">${studentName}</span> (MSSV: ${studentId})</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="px-4 py-2 rounded-2xl border text-center ${statusBg}">
+                            <div class="text-2xl font-black ${scoreColor}">${result.score} <span class="text-xs text-slate-400 font-normal">/ 10</span></div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider mt-0.5 ${scoreColor}">
+                                ${result.score >= 8 ? "Xuất Sắc" : (result.score >= 5 ? "Đạt Yêu Cầu" : "Chưa Đạt")}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Cases Breakdown -->
+                <div class="mt-5">
+                    <h5 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">
+                        Chi Tiết Bộ Test Cases (${result.passedCount}/${result.totalTests} Tests Khớp Kết Quả)
+                    </h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        ${result.testResults.map(tr => `
+                            <div class="p-3 rounded-xl bg-slate-950 border ${tr.status === 'PASSED' ? 'border-emerald-500/40 bg-emerald-950/10' : 'border-rose-500/40 bg-rose-950/10'} font-mono text-xs">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-slate-300">${tr.name}</span>
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold ${tr.status === 'PASSED' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}">
+                                        ${tr.status}
+                                    </span>
+                                </div>
+                                <div class="text-slate-400 text-[11px]">In: <span class="text-indigo-300">${tr.input}</span></div>
+                                <div class="text-slate-400 text-[11px]">Expected: <span class="text-emerald-300">${tr.expected}</span></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Feedback / Warnings -->
+                ${result.feedback.length > 0 ? `
+                    <div class="mt-5 p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-amber-300 space-y-1">
+                        <span class="font-bold block text-amber-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Nhận xét từ Giảng viên / Hệ thống:</span>
+                        <ul class="list-disc list-inside space-y-0.5 text-slate-300">
+                            ${result.feedback.map(msg => `<li>${msg}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            `;
+        }
+
+        /**
+         * 8. SUBMISSIONS STORAGE & HISTORY
+         */
+        function getSavedSubmissions() {
+            try {
+                return JSON.parse(localStorage.getItem(SUBMISSION_STORAGE_KEY)) || [];
+            } catch(e) {
+                return [];
+            }
+        }
+
+        function saveSubmissionRecord(record) {
+            const list = getSavedSubmissions();
+            list.unshift(record); // Prepend newest
+            // Keep max 50 entries
+            if (list.length > 50) list.pop();
+            localStorage.setItem(SUBMISSION_STORAGE_KEY, JSON.stringify(list));
+        }
+
+        function clearAllSubmissions() {
+            if (confirmAction("Bạn có chắc chắn muốn xóa toàn bộ lịch sử điểm và bài nộp trên trình duyệt này không?")) {
+                localStorage.removeItem(SUBMISSION_STORAGE_KEY);
+                renderSubmissionsTable();
+                showToast("Đã xóa sạch lịch sử nộp bài!", "info");
+            }
+        }
+
+        function renderSubmissionsTable() {
+            const list = getSavedSubmissions();
+            if (list.length === 0) {
+                submissionTableBody.innerHTML = '';
+                noSubmissionMsg.classList.remove('hidden');
+                return;
+            }
+
+            noSubmissionMsg.classList.add('hidden');
+            submissionTableBody.innerHTML = list.map((sub, idx) => {
+                const scoreColor = sub.score >= 8 ? 'text-emerald-400' : (sub.score >= 5 ? 'text-amber-400' : 'text-rose-400');
+                return `
+                    <tr class="hover:bg-slate-800/40 transition">
+                        <td class="py-3 px-4 text-slate-400 whitespace-nowrap">${sub.timestamp}</td>
+                        <td class="py-3 px-4 font-bold text-indigo-300 whitespace-nowrap">${escapeHtml(sub.studentId)}</td>
+                        <td class="py-3 px-4 font-sans text-slate-200 font-medium whitespace-nowrap">${escapeHtml(sub.studentName)}</td>
+                        <td class="py-3 px-4 font-sans text-slate-300">${escapeHtml(sub.problemTitle)}</td>
+                        <td class="py-3 px-4 text-center">
+                            <span class="px-2 py-0.5 rounded text-xs ${sub.passedCount === sub.totalTests ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-400'}">
+                                ${sub.passedCount}/${sub.totalTests} tests
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 text-center font-bold text-base ${scoreColor}">
+                            ${sub.score}
+                        </td>
+                        <td class="py-3 px-4 text-right whitespace-nowrap font-sans">
+                            <button onclick="viewSubmissionCode('${sub.id}')" class="px-3 py-1 rounded-lg text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 transition inline-flex items-center gap-1">
+                                <i class="fa-solid fa-code"></i> Xem code
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function viewSubmissionCode(subId) {
+            const list = getSavedSubmissions();
+            const item = list.find(s => s.id === subId);
+            if (!item) return;
+
+            modalTitle.textContent = `${item.problemTitle} - ${item.score}/10 Điểm`;
+            modalSubtitle.textContent = `MSSV: ${item.studentId} | Họ tên: ${item.studentName} | Nộp lúc: ${item.timestamp}`;
+            modalCodeBody.textContent = item.code;
+            codeModal.classList.remove('hidden');
+        }
+
+        /**
+         * 9. UTILITY FUNCTIONS
+         */
+        function escapeHtml(text) {
+            if (!text) return "";
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function copyTextToClipboard(text) {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";
+            textarea.style.left = "-9999px";
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.error('Không thể sao chép:', err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // Custom confirm dialogue replacement
+        function confirmAction(message) {
+            // Simple non-blocking confirmation using standard confirm fallback or custom window
+            return window.confirm(message);
+        }
+
+        function showToast(message, type = "info") {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            const bgClass = {
+                success: "bg-emerald-950/90 border-emerald-500/50 text-emerald-200",
+                error: "bg-rose-950/90 border-rose-500/50 text-rose-200",
+                info: "bg-indigo-950/90 border-indigo-500/50 text-indigo-200"
+            }[type] || "bg-slate-900 border-slate-700 text-white";
+
+            const icon = {
+                success: "fa-solid fa-circle-check text-emerald-400",
+                error: "fa-solid fa-circle-xmark text-rose-400",
+                info: "fa-solid fa-circle-info text-cyan-400"
+            }[type] || "fa-solid fa-bell";
+
+            toast.className = `flex items-center gap-2.5 px-4 py-3 rounded-xl border shadow-xl text-xs sm:text-sm font-medium backdrop-blur-md pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0 ${bgClass}`;
+            toast.innerHTML = `<i class="${icon} text-base"></i> <span>${escapeHtml(message)}</span>`;
+
+            container.appendChild(toast);
+
+            // Animate in
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            // Animate out after 3.5s
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => {
+                    if (toast.parentNode) toast.parentNode.removeChild(toast);
+                }, 300);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
